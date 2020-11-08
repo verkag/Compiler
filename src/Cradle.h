@@ -1,68 +1,31 @@
-#include <stdlib.h>
-#include <cctype>
-#include "cradle.h"
+#ifndef CRADLE
+#define CRADLE
 
-void GetChar()
-{
-	std::cin >> look;
-}
+#include <iostream>
+#include <string>
 
-void Error(const std::string& s)
-{
-	std::cout << std::endl << "Error: " << s << "." << std::endl;
-}
+char look = '\0';
 
-void Abort(const std::string& s)
-{
-	Error(s);
-	exit(1);
-}
+const char TAB = '\t';
 
-void Expected(const std::string& s)
-{
-	Abort(s + " Expected");
-}
+void GetChar();
 
-void Match(const char x)
-{
-	static std::string border = "\'";
+void Error(const std::string& s);
 
-	if (look == x)
-		GetChar();
-	else
-		Expected(border + x + border);
-}
+void Abort(const std::string& s);
 
-char GetName()
-{
-	if (!(std::isalpha(look))) Expected("Name");
-	char name = look;
-	GetChar();
+void Expected(const std::string& s);
 
-	return name;
-}
+void Match(const char c);
 
-char GetNum()
-{
-	if (!(std::isdigit(look))) Expected("Integer");
-	char integer = look;
-	GetChar();
+char GetName();
 
-	return integer;
-}
+char GetNum();
 
-void Emit(const std::string& s)
-{
-	std::cout << TAB << s;
-}
+void Emit(const std::string& s);
 
-void EmitLine(const std::string& s)
-{
-	Emit(s);
-	std::cout << std::endl;
-}
+void EmitLine(const std::string& s);
 
-void Init()
-{
-	GetChar();
-}
+void Init();
+
+#endif
