@@ -1,7 +1,9 @@
 #include <iostream>
-#include "Cradle.h"
+#include "cradle.h"
+#include "parser.h"
 
 int main()
 {
 	Init();
+	Term();
 }
