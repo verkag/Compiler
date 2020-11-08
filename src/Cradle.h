@@ -1,11 +1,6 @@
-#pragma once
-
-#include <iostream>
-#include <vector>
-#include <string>
-
-const char TAB = '\t';
-char look;
+#include <stdlib.h>
+#include <cctype>
+#include "cradle.h"
 
 void GetChar()
 {
@@ -28,10 +23,14 @@ void Expected(const std::string& s)
 	Abort(s + " Expected");
 }
 
-char Match(const char x)
+void Match(const char x)
 {
-	if (look == x) GetChar();
-	else Expected("  " + (std::string&)x + " ");
+	static std::string border = "\'";
+
+	if (look == x)
+		GetChar();
+	else
+		Expected(border + x + border);
 }
 
 char GetName()
@@ -57,7 +56,7 @@ void Emit(const std::string& s)
 	std::cout << TAB << s;
 }
 
-void EmitLn(const std::string& s)
+void EmitLine(const std::string& s)
 {
 	Emit(s);
 	std::cout << std::endl;
