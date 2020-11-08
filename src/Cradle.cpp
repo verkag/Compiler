@@ -2,6 +2,9 @@
 #include <cctype>
 #include "cradle.h"
 
+char look = '\0';
+const char TAB = '\t';
+
 void GetChar()
 {
 	std::cin >> look;
