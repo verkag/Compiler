@@ -4,9 +4,9 @@
 #include <iostream>
 #include <string>
 
-char look = '\0';
+extern char look;
 
-const char TAB = '\t';
+extern const char TAB;
 
 void GetChar();
 
