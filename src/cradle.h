@@ -18,9 +18,9 @@ void Expected(const std::string& s);
 
 void Match(const char c);
 
-char GetName();
+std::string GetName();
 
-char GetNum();
+std::string GetNum();
 
 void Emit(const std::string& s);
 
@@ -28,4 +28,4 @@ void EmitLine(const std::string& s);
 
 void Init();
 
-#endif
+#endif 
