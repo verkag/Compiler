@@ -1,46 +1,83 @@
-
+#include <stdlib.h>
+#include <cctype>
 #include "cradle.h"
 #include "parser.h"
-#include <string>
-#include <cstring>
 
-void Term()
+char look = '\0';
+const char TAB = '\t';
+
+void GetChar()
 {
-	EmitLine((std::string)"MOVE # " + GetNum() + " D0");
+	look = std::getchar();
 }
 
-void Add()
+void Error(const std::string& s)
 {
-	Match('+');
-	Term();
-	EmitLine("Add D1, D0");
+	std::cout << std::endl << "Error: " << s << "." << std::endl;
 }
 
-void Subtract()
+void Abort(const std::string& s)
 {
-	Match('-');
-	Term();
-	EmitLine("Add D1, D0");
+	Error(s);
+	exit(1);
 }
 
-void Expression()
+void Expected(const std::string& s)
 {
-	Term();
-	while (std::strchr("+-", look))
+	Abort(s + " Expected");
+}
+
+void Match(const char x)
+{
+	static std::string border = "\'";
+
+	if (look != x) Expected(border + x + border);
+	else
 	{
-		EmitLine("pushl %eax");
-		switch (look)
-		{
-		case '+':
-			Add();
-			break;
-		case '-':
-			Subtract();
-			break;
-		default:
-			Expected("Addop");
-		}
-
+		GetChar();
+		SkipWhite();
 	}
 }
 
+std::string GetName()
+{
+	std::string token = ""; 								
+	if (!IsAlNum(look))	Expected("Name");								
+	while (IsAlNum(look))
+	{
+		token = token + static_cast<char>(std::toupper(look));
+		GetChar();
+	}
+	return token;
+	SkipWhite();
+}
+
+std::string GetNum()
+{
+	std::string value = "";
+	if (!std::isdigit(look)) Expected("Integer");
+	while (std::isdigit(look))
+	{
+		value += look;
+		GetChar();
+	}
+	return value;
+	SkipWhite();
+}
+
+void Emit(const std::string& s)
+{
+	std::cout << TAB << s;
+}
+
+void EmitLine(const std::string& s)
+{
+	Emit(s);
+	std::cout << std::endl;
+}
+
+void Init()
+{
+	GetChar();
+	SkipWhite();
+}
