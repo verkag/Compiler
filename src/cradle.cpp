@@ -1,13 +1,14 @@
 #include <stdlib.h>
 #include <cctype>
 #include "cradle.h"
+#include "parser.h"
 
 char look = '\0';
 const char TAB = '\t';
 
 void GetChar()
 {
-	std::cin >> look;
+	look = std::getchar();
 }
 
 void Error(const std::string& s)
@@ -30,28 +31,38 @@ void Match(const char x)
 {
 	static std::string border = "\'";
 
-	if (look == x)
-		GetChar();
+	if (look != x) Expected(border + x + border);
 	else
-		Expected(border + x + border);
+	{
+		GetChar();
+		SkipWhite();
+	}
 }
 
-char GetName()
+std::string GetName()
 {
-	if (!(std::isalpha(look))) Expected("Name");
-	char name = look;
-	GetChar();
-
-	return name;
+	std::string token = ""; 								
+	if (!IsAlNum(look))	Expected("Name");								
+	while (IsAlNum(look))
+	{
+		token = token + static_cast<char>(std::toupper(look));
+		GetChar();
+	}
+	return token;
+	SkipWhite();
 }
 
-char GetNum()
+std::string GetNum()
 {
-	if (!(std::isdigit(look))) Expected("Integer");
-	char integer = look;
-	GetChar();
-
-	return integer;
+	std::string value = "";
+	if (!std::isdigit(look)) Expected("Integer");
+	while (std::isdigit(look))
+	{
+		value += look;
+		GetChar();
+	}
+	return value;
+	SkipWhite();
 }
 
 void Emit(const std::string& s)
@@ -68,4 +79,5 @@ void EmitLine(const std::string& s)
 void Init()
 {
 	GetChar();
+	SkipWhite();
 }
